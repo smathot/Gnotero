@@ -1,0 +1,8 @@
+include data/gnotero.desktop
+include data/gnoterobrowse.desktop
+include resources/*.xml
+recursive-include data/icons *.png *.svg
+include COPYING
+include CHANGELOG
+
+

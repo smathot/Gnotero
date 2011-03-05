@@ -1,0 +1,18 @@
+
+[Desktop Entry]
+Name=Gnoterobrowse
+Comment=Quick access to your Zotero references (Browser)
+TryExec=gnoterobrowse
+Exec=gnoterobrowse
+Icon=gnotero
+Type=Application
+X-GNOME-DocPath=
+X-GNOME-Bugzilla-Bugzilla=
+X-GNOME-Bugzilla-Product=
+X-GNOME-Bugzilla-Component=
+X-GNOME-Bugzilla-Version=
+Categories=GNOME;GTK;Utility;
+StartupNotify=false
+X-Ubuntu-Gettext-Domain=gnoterobrowse
+Name[en_US]=Gnoterobrowse
+
