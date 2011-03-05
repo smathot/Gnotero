@@ -18,9 +18,12 @@ along with Gnotero.  If not, see <http://www.gnu.org/licenses/>.
 import os
 import os.path
 import gtk
+import gobject
 import time
 import subprocess
-from pygnotero import gnotero_base
+import socket
+import threading
+from pygnotero import gnotero_base, listener
 
 class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 	
@@ -75,8 +78,9 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 				 </menubar>
 				</ui>
 			"""
-						
-		self.first_result = None	
+			
+		self.first_result = None
+		self.clipboard = gtk.Clipboard()
 
 		ag = gtk.ActionGroup('Actions')
 		ag.add_actions(actions)
@@ -112,8 +116,21 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 		self.connect('activate', self.on_activate)		
 		self.shown = False		
 		
-		self.create_window()											
-				
+		self.create_window()	
+			
+		# Start the listener	
+		self.listener = listener.Listener(self)
+		self.listener.start()
+		
+	def quit(self, event = None):
+	
+		"""
+		Stop Gnotero
+		"""
+		
+		self.listener.alive = False	
+		gnotero_base.gnotero_base.quit(self, event)
+						
 	def create_window(self):
 		
 		"""
@@ -311,13 +328,14 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 		self.menu.popup(None, None, None, button, time)
 
 		
-	def on_activate(self, status):
+	def on_activate(self, status = None):
 		
 		"""
 		Show the window
 		"""		
 	
 		if not self.shown:
+		
 			# The get_geometry function does not appear to work under windows
 			if self.os != "windows" and self.attach_menu_to_icon == "yes":
 				screen, area, orientation = self.get_geometry()
@@ -339,12 +357,24 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 				
 			else:				
 				self.window.move(int(gtk.gdk.screen_width() * self.window_pos_x - self.popup_width / 2), int(gtk.gdk.screen_height() * self.window_pos_y))
+			
+			# Optionally, use the clipboard for the search term. Use at the most
+			# the first 10 characters of the first line of the clipboard
+			if self.use_clipboard == "yes":
+				s = self.clipboard.wait_for_text()
+				if s != None:
+					self.search_edit.set_text(s.split()[0][:10].strip())
+					self.search_edit.select_region(0, -1)
+					self.search()
+					
 			self.window.show_all()
+			self.search_edit.grab_focus()
 
 			self.shown = True
 		else:
 			self.window.hide()
 			self.shown = False
+			
 			
 	def on_focus_out(self, widget, event):
 		

@@ -39,7 +39,8 @@ class gnoteroconf(gnotero_builder.gnotero_builder):
 		self.sync_path_input = self.builder.get_object("sync_path")	
 		self.sync_name_input = self.builder.get_object("sync_name")	
 		self.button_about = self.builder.get_object("button_about")
-		self.checkbutton_gnote = self.builder.get_object("checkbutton_gnote")		
+		self.checkbutton_gnote = self.builder.get_object("checkbutton_gnote")	
+		self.checkbutton_clipboard = self.builder.get_object("checkbutton_clipboard")	
 		self.checkbutton_live_search = self.builder.get_object("checkbutton_live_search")
 		self.checkbutton_icon_tango = self.builder.get_object("checkbutton_icon_tango")
 		self.checkbutton_icon_light = self.builder.get_object("checkbutton_icon_light")
@@ -61,6 +62,7 @@ class gnoteroconf(gnotero_builder.gnotero_builder):
 		self.sync_name_input.set_text(self.sync_name)
 		self.checkbutton_gnote.set_active(self.notes == "gnote")
 		self.checkbutton_live_search.set_active(self.enable_live_search == "yes")
+		self.checkbutton_clipboard.set_active(self.use_clipboard == "yes")
 		
 		self.hold_toggle = False
 		self.checkbutton_icon_tango.set_active(self.systray_icon == "gnotero")
@@ -94,12 +96,17 @@ class gnoteroconf(gnotero_builder.gnotero_builder):
 		if self.checkbutton_gnote.get_active():
 			self.notes = "gnote"
 		else:
-			self.notes = "disabled"
+			self.notes = "disabled"			
 			
 		if self.checkbutton_live_search.get_active():
 			self.enable_live_search = "yes"
 		else:
 			self.enable_live_search = "no"		
+			
+		if self.checkbutton_clipboard.get_active():
+			self.use_clipboard = "yes"
+		else:
+			self.use_clipboard = "no"			
 			
 		self.zotero_folder = self.zotero_folder_input.get_current_folder()
 		self.sync_path = self.sync_path_input.get_current_folder()

@@ -34,7 +34,7 @@ import urllib
 
 class gnotero_base(autoconfig.autoconfig):	
 
-	version = 0.42
+	version = 0.43
 
 	def __init__(self):			
 	
@@ -93,6 +93,8 @@ class gnotero_base(autoconfig.autoconfig):
 		d["ignore_updates_up_to_version"] = 0.0
 		d["ellipsize"] = "yes"
 		d["pdf_use_metadata"] = "yes"
+		d["use_clipboard"] = "no"
+		d["listener_port"] = 43250
 		
 		return d
 	
@@ -123,6 +125,8 @@ class gnotero_base(autoconfig.autoconfig):
 		d["ignore_updates_up_to_version"] = "[version] Supresses the update notification if the update version number is less or equal to a specified version"
 		d["ellipsize"] = "[yes | no] Use '...' to shorten titles and authors"
 		d["pdf_use_metadata"] = "[yes | no] Use metadata for display in Zotero and automatically edit metadata when copying"
+		d["use_clipboard"] = "[yes | no] Automatically search based on the contents of the clipboard"
+		d["listener_port"] = "[port nr.] The port at which Gnotero listens for incomming commands"
 		
 		return d
 		
@@ -213,7 +217,7 @@ class gnotero_base(autoconfig.autoconfig):
 		mb.run()
 		mb.destroy()			
 					
-	def quit(self, event):
+	def quit(self, event = None):
 		
 		"""
 		Quits the program

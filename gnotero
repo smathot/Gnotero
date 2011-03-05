@@ -18,9 +18,13 @@ along with Gnotero.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import pygnotero.gnotero
-import gtk
+import pygnotero.listener
+import gtk, gobject
+import threading
 
 if __name__ == '__main__':
+
 	pygnotero.gnotero.Gnotero()
 	gtk.main()
+
 	

@@ -130,16 +130,16 @@ class zotero_item:
 	
 				if term_type in term_collection:
 					for collection in self.collections:
-						if collection.lower().count(term) > 0:
+						if term in collection.lower():
 							match = True
 
 				if not match and term_type in term_author:
 					for author in self.authors:
-						if author.lower().count(term) > 0:
+						if term in author.lower():
 							match = True
 							
 				if not match and self.date != None and term_type in term_date:
-					if self.date.count(term) > 0:
+					if term in self.date:
 						match = True
 						
 				if not match and self.title != None and term_type in term_title and term in self.title.lower():
