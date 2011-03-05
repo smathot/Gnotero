@@ -1,0 +1,64 @@
+CHANGELOG
+
+0.42
+- Enabled ellipsize by default, to make sure that every result is the same size and
+  that text doesn't spill over beyond the visible borders.
+- Made live_search_time configurable, which indicates how fast Gnotero should autosearch
+- Replaced the pdftk way of getting metadata with PyPDF, which is much faster
+- Fixed a bug where Gnotero failed to open linked attachments
+
+0.41
+- Fixed window positioning so that the window is always within the screen boundaries (Linux).
+  Patch provided by Thomas Jost.
+- Made the window position configurable under Windows (and if attach_menu_to_icon = no under Linux)
+- Disabled copying PDFs from within Gnotero (use Gnoterobrowse instead, works much better)
+- Autoconfig now automatically adds comments to the .gnotero config file
+- Gnotero now checks for updates automatically
+
+0.40
+- Started a systematic changelog :-)
+- Gnotero now offers to locate Zotero automatically on the first run
+- Migration to libzotero (from zoterotools) is complete
+- Results are now cached to speed up repeated searches (unfortunately Zotero
+  modifies the database quite frequently so the performance gain is not large)
+- Removed frame from the Gnotero search entry
+- Added live search (as-you-type)
+- Added monochrome systray icons (www.iconsweets.com)
+- Searching for gnote now uses fuzzy matching,
+  rather than simply taking the first matching note
+- Migration to libgnote (from gnote.py) is complete
+- Fixed autoconfig.py so it escapes slashes
+- Added a number of hacks to make Gnotero work under Windows XP
+- Added more options to Gnoteroconf and tried to make it less confusing
+- Made the first run more user friendly
+
+10-09-2010
+- Added search-terms "publication", "journal" and "title"
+- Added show in firefox buttons
+
+8-09-2010
+- Fixed ordering of collections and made To Read collection special
+- Changed the collection list appearance and made it expandable
+
+30-08-2010
+- Replaces zoterotools by libzotero
+- Not using pypdf anymore, switching to PDFtk
+
+25-08-2010
+- Fixed Gnotero displaying items from the trash as well
+- Handle "in press" etc better.
+- Added gnoteroconf configuration tool
+- Included more intelligent searching
+
+24-08-2010
+- Created gnoterobrowse
+- Included a copy option in gnotero (using gnoterosync)
+
+22-08-2010
+- Changed settings handling to autoconfig class
+	
+28-01-201
+- Added a desktop entry
+- Added .deb packages
+- Made the dialogs a bit more pretty
+- Changed evince to xdg-open, so that pdfs can be opened anywhere
