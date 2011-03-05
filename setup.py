@@ -5,7 +5,7 @@ from distutils.core import setup
 import glob
 
 setup(name='gnotero',
-	version='0.42',
+	version='0.43',
 	description='Quick access to your Zotero references',
 	author='Sebastiaan Mathot',
 	author_email='s.mathot@cogsci.nl',

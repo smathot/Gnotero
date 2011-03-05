@@ -5,6 +5,7 @@ CHANGELOG
 - Add the option to automatically search based on the contents of the clipboard
 - Added remote control via gnoteroctrl
 - Updated gnoteroconf for clipboard option
+- Added icon to gnotero.exe under Windows
 
 0.42
 - Enabled ellipsize by default, to make sure that every result is the same size and
