@@ -144,8 +144,8 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 		# an icon and a name to display in the taskbar
 		if self.os == "windows":
 			self.window.set_icon_from_file("data\\icons\\gnotero.png")
-			self.window.set_title("Gnotero")
-
+		
+		self.window.set_title("Gnotero")
 		self.window.set_decorated(False)
 		self.window.set_keep_above(True)
 		self.window.set_skip_taskbar_hint(True)
@@ -368,13 +368,11 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 					self.search()
 					
 			self.window.show_all()
-			self.search_edit.grab_focus()
-
 			self.shown = True
+									
 		else:
 			self.window.hide()
-			self.shown = False
-			
+			self.shown = False			
 			
 	def on_focus_out(self, widget, event):
 		
@@ -386,4 +384,3 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 			self.window.hide()
 			self.shown = False
 		
-

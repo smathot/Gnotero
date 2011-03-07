@@ -6,6 +6,7 @@ CHANGELOG
 - Added remote control via gnoteroctrl
 - Updated gnoteroconf for clipboard option
 - Added icon to gnotero.exe under Windows
+- Added positioning options to Gnoteroconf
 
 0.42
 - Enabled ellipsize by default, to make sure that every result is the same size and

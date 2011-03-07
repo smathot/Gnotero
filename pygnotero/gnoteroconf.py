@@ -45,6 +45,9 @@ class gnoteroconf(gnotero_builder.gnotero_builder):
 		self.checkbutton_icon_tango = self.builder.get_object("checkbutton_icon_tango")
 		self.checkbutton_icon_light = self.builder.get_object("checkbutton_icon_light")
 		self.checkbutton_icon_dark = self.builder.get_object("checkbutton_icon_dark")
+		self.checkbutton_attach = self.builder.get_object("checkbutton_attach")
+		self.spinbutton_hpos = self.builder.get_object("spinbutton_hpos")
+		self.spinbutton_vpos = self.builder.get_object("spinbutton_vpos")
 		
 		self.checkbutton_icon_tango.icon = "gnotero"
 		self.checkbutton_icon_light.icon = "gnotero-mono-light"
@@ -63,6 +66,11 @@ class gnoteroconf(gnotero_builder.gnotero_builder):
 		self.checkbutton_gnote.set_active(self.notes == "gnote")
 		self.checkbutton_live_search.set_active(self.enable_live_search == "yes")
 		self.checkbutton_clipboard.set_active(self.use_clipboard == "yes")
+		self.checkbutton_attach.set_active(self.attach_menu_to_icon == "yes")
+		self.spinbutton_hpos.set_range(0, 100)
+		self.spinbutton_vpos.set_range(0, 100)
+		self.spinbutton_hpos.set_value(100 * self.window_pos_x)
+		self.spinbutton_vpos.set_value(100 * self.window_pos_y)
 		
 		self.hold_toggle = False
 		self.checkbutton_icon_tango.set_active(self.systray_icon == "gnotero")
@@ -106,7 +114,15 @@ class gnoteroconf(gnotero_builder.gnotero_builder):
 		if self.checkbutton_clipboard.get_active():
 			self.use_clipboard = "yes"
 		else:
-			self.use_clipboard = "no"			
+			self.use_clipboard = "no"	
+			
+		if self.checkbutton_attach.get_active():
+			self.attach_menu_to_icon = "yes"
+		else:
+			self.attach_menu_to_icon = "no"
+			
+		self.window_pos_x = 0.01 * self.spinbutton_hpos.get_value_as_int()
+		self.window_pos_y = 0.01 * self.spinbutton_vpos.get_value_as_int()
 			
 		self.zotero_folder = self.zotero_folder_input.get_current_folder()
 		self.sync_path = self.sync_path_input.get_current_folder()
