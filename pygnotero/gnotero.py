@@ -363,10 +363,10 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 			if self.use_clipboard == "yes":
 				s = self.clipboard.wait_for_text()
 				if s != None:
-					self.search_edit.set_text(s.split()[0][:10].strip())
-					self.search_edit.select_region(0, -1)
+					self.search_edit.set_text(s.split()[0][:10].strip())					
 					self.search()
 					
+			self.search_edit.select_region(0, -1)					
 			self.window.show_all()
 			self.shown = True
 									

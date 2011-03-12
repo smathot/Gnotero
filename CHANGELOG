@@ -1,5 +1,8 @@
 CHANGELOG
 
+0.44
+- Always select text on activating the window (not just when the clipboard is used)
+
 0.43
 - Replaced the count() function in zotero_item.match() with 'in' statements
 - Add the option to automatically search based on the contents of the clipboard
