@@ -34,7 +34,7 @@ import urllib
 
 class gnotero_base(autoconfig.autoconfig):	
 
-	version = 0.43
+	version = 0.44
 
 	def __init__(self):			
 	
