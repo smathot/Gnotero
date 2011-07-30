@@ -80,7 +80,12 @@ class Listener(threading.Thread):
 					self.gnotero.search_edit.set_text(s[7:])
 					tmp = self.gnotero.use_clipboard
 					self.gnotero.use_clipboard = "no"
-					gobject.idle_add(self.gnotero.emit, "activate")	
+
+					if self.gnotero.use_AppInd:
+						self.gnotero.on_activate(self.gnotero)
+					else:
+						gobject.idle_add(self.gnotero.emit, "activate")	
+
 					time.sleep(0.2)
 					self.gnotero.use_clipboard = tmp									
 
@@ -89,5 +94,8 @@ class Listener(threading.Thread):
 					# Show the window
 				
 					print "listener.run(): activating"
-					gobject.idle_add(self.gnotero.emit, "activate")	
-							
+
+					if self.gnotero.use_AppInd:
+						self.gnotero.on_activate(self.gnotero)
+					else:
+						gobject.idle_add(self.gnotero.emit, "activate")			

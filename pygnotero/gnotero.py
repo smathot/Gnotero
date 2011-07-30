@@ -25,6 +25,13 @@ import socket
 import threading
 from pygnotero import gnotero_base, listener
 
+have_AppIndicator = True
+try:
+	import appindicator
+except:
+	have_AppIndicator = False
+
+
 class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 	
 	def __init__(self):
@@ -34,19 +41,57 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 		"""
 		
 		gnotero_base.gnotero_base.__init__(self)		
-		gtk.StatusIcon.__init__(self)				
+	
+		if have_AppIndicator:
+			self.AppInd = appindicator.Indicator("gnotero-menu",self.systray_icon,appindicator.CATEGORY_OTHER)
+			self.AppInd.set_status(appindicator.STATUS_ACTIVE)
+			self.attach_menu_to_icon == "no"
+		else:
+			gtk.StatusIcon.__init__(self)				
+		
+		# give gnotero items a copy of have_AppIndicator, so
+		# the listener can acess it without needing to load
+		# appindicator.
+		self.use_AppInd = have_AppIndicator
+			
 		
 		if self.os != "windows":
-			actions = [
-				('Menu',  None, 'Menu'),
-				('Quit', gtk.STOCK_QUIT, None, None, 'Quit', self.quit),
-				('Settings', gtk.STOCK_PREFERENCES, None, None, 'Gnoteroconf', self.start_gnoteroconf),
-				('Copy', None, None, None, 'Gnoterobrowse', self.start_gnoterobrowse),
-				('Zotero', None, None, None, 'Zotero', self.start_zotero),
-				('About', gtk.STOCK_ABOUT, None, None, 'About', self.about)
-				]
+			if have_AppIndicator:
+				actions = [
+					('Menu',  None, 'Menu'),
+					('Search',None,None,None,'Search Zotero',self.on_activate),
+					('Quit', gtk.STOCK_QUIT, None, None, 'Quit', self.quit),
+					('Settings', gtk.STOCK_PREFERENCES, None, None, 'Gnoteroconf', self.start_gnoteroconf),
+					('Copy', None, None, None, 'Gnoterobrowse', self.start_gnoterobrowse),
+					('Zotero', None, None, None, 'Zotero', self.start_zotero),
+					('About', gtk.STOCK_ABOUT, None, None, 'About', self.about)
+					]
 
-			menu = """
+				menu = """
+				<ui>
+				 <menubar name="Menubar">
+				  <menu action="Menu">
+                                   <menuitem action="Search"/>
+				   <menuitem action="Settings"/>
+				   <menuitem action="Copy"/>
+				   <menuitem action="Zotero"/>
+				   <menuitem action="About"/>
+				   <menuitem action="Quit"/>			   
+				  </menu>
+				 </menubar>
+				</ui>
+			"""
+			else:
+				actions = [
+					('Menu',  None, 'Menu'),
+					('Quit', gtk.STOCK_QUIT, None, None, 'Quit', self.quit),
+					('Settings', gtk.STOCK_PREFERENCES, None, None, 'Gnoteroconf', self.start_gnoteroconf),
+					('Copy', None, None, None, 'Gnoterobrowse', self.start_gnoterobrowse),
+					('Zotero', None, None, None, 'Zotero', self.start_zotero),
+					('About', gtk.STOCK_ABOUT, None, None, 'About', self.about)
+					]
+
+				menu = """
 				<ui>
 				 <menubar name="Menubar">
 				  <menu action="Menu">
@@ -89,6 +134,10 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 		self.manager.add_ui_from_string(menu)
 		self.menu = self.manager.get_widget('/Menubar/Menu/Quit').props.parent
 
+		if have_AppIndicator:
+			self.menu.show()
+			self.AppInd.set_menu(self.menu)
+
 		quit = self.manager.get_widget('/Menubar/Menu/Quit')
 		quit.get_children()[0].set_markup('Quit')		
 
@@ -99,6 +148,11 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 			copy = self.manager.get_widget('/Menubar/Menu/Copy')
 			copy.get_children()[0].set_markup('Gnoterobrowse ')
 		
+			if have_AppIndicator:
+				search = self.manager.get_widget('/Menubar/Menu/Search')
+				search.get_children()[0].set_markup('Search Gnotero')
+			
+
 		zotero = self.manager.get_widget('/Menubar/Menu/Zotero')
 		zotero.get_children()[0].set_markup('Fullscreen Zotero ')		
 		
@@ -106,16 +160,19 @@ class Gnotero(gtk.StatusIcon, gnotero_base.gnotero_base):
 		if self.os == "windows":
 			self.set_from_file("data\\icons\\gnotero.png")
 		else:
-			pixbuf = self.icon_theme.load_icon(self.systray_icon, 22, 0)
-			self.set_from_pixbuf(pixbuf)
+			if not have_AppIndicator:
+				pixbuf = self.icon_theme.load_icon(self.systray_icon, 22, 0)
+				self.set_from_pixbuf(pixbuf)
 
-		self.set_tooltip('Quick access to your Zotero references')
-		self.set_visible(True)							
+		if not have_AppIndicator:
+			self.set_tooltip('Quick access to your Zotero references')
+			self.set_visible(True)							
 							
-		self.connect('popup-menu', self.on_popup_menu)
-		self.connect('activate', self.on_activate)		
+			self.connect('popup-menu', self.on_popup_menu)
+			self.connect('activate', self.on_activate)		
+
+
 		self.shown = False		
-		
 		self.create_window()	
 			
 		# Start the listener	
